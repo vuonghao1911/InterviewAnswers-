@@ -4,11 +4,14 @@ import { useState } from "react";
 
 function App() {
   const [data, setData] = useState();
+  var arrResult = [];
+
   const getData = async () => {
     try {
       let response = await fetch("https://jsonplaceholder.typicode.com/posts");
       let json = await response.json();
       setData(json);
+
       console.log("data", json);
     } catch (error) {
       console.error(error);
@@ -30,6 +33,8 @@ function App() {
     fetch("https://jsonplaceholder.typicode.com/posts", requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        arrResult.push(data);
+        setData(arrResult);
         console.log("result", data);
       });
   };
@@ -45,10 +50,19 @@ function App() {
       <button type="submit" className="button-fetch" onClick={addItem}>
         Create
       </button>
-
-      {data.map((home) => (
-        <div>{home.id}</div>
-      ))}
+      <div id="demo">
+        {data == null ? (
+          <></>
+        ) : (
+          data.map((item) => (
+            <div id="divItem">
+              <p>
+                id: {item.id} userId: {item.userId} title: {item.title}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
